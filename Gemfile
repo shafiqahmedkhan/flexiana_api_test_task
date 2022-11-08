@@ -6,3 +6,4 @@ gem "cucumber"
 gem 'json'
 gem 'rspec'
 gem 'httparty'
+gem 'pry'

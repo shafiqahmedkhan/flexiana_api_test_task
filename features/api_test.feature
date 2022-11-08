@@ -1,11 +1,13 @@
 Feature: Card Deck
 
-  Scenario:
-    Given I create a deck
-    And shuffle the deck
-    And Draw 3 cards from the deck
-    And Make 2piles wit h 5cards each from deck
-    And List the cards in pile1 and pile2
+  Scenario: User is able to draw card from a deck
+    Given I create a new deck
+    When shuffle the deck
+    Then I should be able to draw 3 cards from the deck
+
+  Scenario: User should be able to draw from seperate piles
+    Given make 2 piles with 5 cards from each deck
+    Then List the cards in pile1 and pile2
     And shuffle pile1
-    And draw 2 cards from pile1
-    And draw 3 cards from pile2
+    And draw 2 cards from pile 1
+    And draw 3 cards from pile 2
