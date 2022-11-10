@@ -32,4 +32,8 @@ module Endpoints
     base_url + "/#{deck_id}/pile/#{pile_name}/shuffle/"
   end
 
+  def self.draw_a_card_from_a_pile(deck_id, pile_name, no_of_cards)
+    base_url + "/#{deck_id}/pile/#{pile_name}/draw/?count=#{no_of_cards}"
+  end
+
 end

@@ -54,15 +54,17 @@ end
 And(/^shuffle pile 1$/) do
   response_1 = Requests.shuffle_a_pile(@deck_id_1, @pile_1)
   expect(response_1.code).to eql(200)
-  #response_2 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_2}/list/")
-  #puts response_2.body
-  #aseert the above 2 responses are not equal
+  response_2 = Requests.list_cards_from_a_pile(@deck_id_1, @pile_1)
+  expect(response_2.code).to eql(200)
+  expect(response_1.body).not_to equal (response_2.body)
 end
 
 And("draw {int} cards from pile 1") do |no_of_cards|
-  response = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id_1}/pile/#{@pile_1}/draw/?count=#{no_of_cards}")
+  response = Requests.draw_a_card_from_pile(@deck_id_1, @pile_1, no_of_cards)
+  expect(response.code).to eql(200)
 end
 
 And("draw {int} cards from pile 2") do |no_of_cards|
-  response = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_2}/draw/?count=#{no_of_cards}")
+  response = Requests.draw_a_card_from_pile(@deck_id_2, @pile_2, no_of_cards)
+  expect(response.code).to eql(200)
 end

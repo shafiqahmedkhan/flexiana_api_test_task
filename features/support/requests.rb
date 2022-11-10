@@ -32,4 +32,8 @@ class Requests
     HTTParty.post(Endpoints.shuffle_a_pile(deck_id, pile_name))
   end
 
+  def self.draw_a_card_from_pile(deck_id, pile_name, no_of_cards)
+    HTTParty.post(Endpoints.draw_a_card_from_a_pile(deck_id, pile_name, no_of_cards))
+  end
+
 end
