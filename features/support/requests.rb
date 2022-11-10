@@ -24,4 +24,8 @@ class Requests
     HTTParty.get(Endpoints.add_cards_to_piles(deck_id, pile_name, cards))
   end
 
+  def self.list_cards_from_a_pile(deck_id, pile_name)
+    HTTParty.get(Endpoints.list_cards_from_a_pile(deck_id, pile_name))
+  end
+
 end

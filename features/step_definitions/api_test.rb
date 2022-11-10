@@ -43,12 +43,11 @@ And('make {int} piles with {int} cards from each deck') do |no_of_piles, no_of_c
   pile_2 = Requests.add_cards_to_piles(@deck_id_2, @pile_1, @array_2.join(","))
 end
 
-And("List the cards in pile1 and pile2") do
-  #list the cards in both pile
-  response_1 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id_1}/pile/#{@pile_1}/list/")
-  puts response_1.body
-  response_2 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_1}/list/")
-  puts response_2.body
+And("List the cards in pile 1 and pile 2") do
+  response_1 = Requests.list_cards_from_a_pile(@deck_id_1, @pile_1)
+  expect(response_1.code).to eql(200)
+  response_2 = Requests.list_cards_from_a_pile(@deck_id_2, @pile_2)
+  expect(response_2.code).to eql(200)
 end
 
 And(/^shuffle pile1$/) do
