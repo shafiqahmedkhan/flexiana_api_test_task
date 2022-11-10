@@ -36,8 +36,8 @@ And('make {int} piles with {int} cards from each deck') do |no_of_piles, no_of_c
   response_body_2["cards"].each_with_index do | element |
     @array_2.push(element['code'])
   end
-  @pile_1 = SecureRandom.send(:choose, [*'a'..'z'], 20)
-  @pile_2 = SecureRandom.send(:choose, [*'a'..'z'], 20)
+  @pile_1 = Utilities.generate_pile_name
+  @pile_2 = Utilities.generate_pile_name
   puts
   pile_1 = Requests.add_cards_to_piles(@deck_id_1, @pile_1, @array_1.join(","))
   pile_2 = Requests.add_cards_to_piles(@deck_id_2, @pile_1, @array_2.join(","))
