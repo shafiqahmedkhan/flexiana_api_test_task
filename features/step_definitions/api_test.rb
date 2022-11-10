@@ -1,33 +1,31 @@
 Given("I create a new deck") do
-  @response = Requests.create_new_deck
-  expect(@response.code).to eql(200)
+  response = Requests.create_new_deck
+  expect(response.code).to eql(200)
 end
 
-And("shuffle the deck") do
-  @response = Requests.shuffle_deck(1)
-  expect(@response.code).to eql(200)
-  response_body = JSON.parse(@response.body)
+When("shuffle the deck") do
+  response = Requests.shuffle_deck(1)
+  expect(response.code).to eql(200)
+  response_body = JSON.parse(response.body)
   @deck_id = response_body["deck_id"]
 end
 
 Then("I should be able to draw {int} cards from the deck") do |draw_count|
-  @response = Requests.draw_a_card(@deck_id, draw_count)
-  expect(@response.code).to eql(200)
-  # add assertion to confirm deck has now 49 cards remaining
+  response = Requests.draw_a_card(@deck_id, draw_count)
+  expect(response.code).to eql(200)
+  response_body = JSON.parse(response.body)
+  expect(response_body["remaining"]).to eql(52-draw_count)
 end
 
 And('make {int} piles with {int} cards from each deck') do |no_of_piles, no_of_cards|
-  #draw 5 cards from deck 1
-  @drawn_cards_1 = Requests.draw_a_card_from_shuffled_deck(no_of_cards)
-  @drawn_cards_2 = Requests.draw_a_card_from_shuffled_deck(no_of_cards)
-  response_body_1 = JSON.parse(@drawn_cards_1.body)
-  response_body_2 = JSON.parse(@drawn_cards_2.body)
+  drawn_cards_1 = Requests.draw_a_card_from_shuffled_deck(no_of_cards)
+  drawn_cards_2 = Requests.draw_a_card_from_shuffled_deck(no_of_cards)
+  response_body_1 = JSON.parse(drawn_cards_1.body)
+  response_body_2 = JSON.parse(drawn_cards_2.body)
   @deck_id_1 = response_body_1["deck_id"]
-  @deck_id_2 = response_body_2["deck_id"]
-  #assert we have 5 cards
   expect(response_body_1["cards"].count).to eql no_of_cards.to_int
+  @deck_id_2 = response_body_2["deck_id"]
   expect(response_body_2["cards"].count).to eql no_of_cards.to_int
-  #add these cards to a pile
   @array_1 = []
   response_body_1["cards"].each_with_index do | element |
     @array_1.push(element['code'])

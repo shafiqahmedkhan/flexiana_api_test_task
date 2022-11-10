@@ -16,7 +16,6 @@ class Requests
   end
 
   def self.draw_a_card_from_shuffled_deck(draw_count)
-    puts Endpoints.draw_a_card_from_shuffled_deck(draw_count)
     HTTParty.get(Endpoints.draw_a_card_from_shuffled_deck(draw_count))
   end
 
