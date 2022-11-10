@@ -8,6 +8,6 @@ Feature: Card Deck
   Scenario: User should be able to draw from seperate piles
     Given make 2 piles with 5 cards from each deck
     Then List the cards in pile 1 and pile 2
-    #And shuffle pile1
+    And shuffle pile 1
     #And draw 2 cards from pile 1
     #And draw 3 cards from pile 2

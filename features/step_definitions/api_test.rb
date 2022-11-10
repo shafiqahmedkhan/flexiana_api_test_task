@@ -38,9 +38,10 @@ And('make {int} piles with {int} cards from each deck') do |no_of_piles, no_of_c
   end
   @pile_1 = Utilities.generate_pile_name
   @pile_2 = Utilities.generate_pile_name
-  puts
   pile_1 = Requests.add_cards_to_piles(@deck_id_1, @pile_1, @array_1.join(","))
+  expect(pile_1.code).to eql(200)
   pile_2 = Requests.add_cards_to_piles(@deck_id_2, @pile_1, @array_2.join(","))
+  expect(pile_2.code).to eql(200)
 end
 
 And("List the cards in pile 1 and pile 2") do
@@ -50,20 +51,18 @@ And("List the cards in pile 1 and pile 2") do
   expect(response_2.code).to eql(200)
 end
 
-And(/^shuffle pile1$/) do
-  response_1 = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id_1}/pile/#{@pile_1}/shuffle/")
-  puts response_1.body
-  response_2 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_2}/list/")
-  puts response_2.body
+And(/^shuffle pile 1$/) do
+  response_1 = Requests.shuffle_a_pile(@deck_id_1, @pile_1)
+  expect(response_1.code).to eql(200)
+  #response_2 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_2}/list/")
+  #puts response_2.body
   #aseert the above 2 responses are not equal
 end
 
 And("draw {int} cards from pile 1") do |no_of_cards|
   response = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id_1}/pile/#{@pile_1}/draw/?count=#{no_of_cards}")
-  puts response.body
 end
 
 And("draw {int} cards from pile 2") do |no_of_cards|
   response = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_2}/draw/?count=#{no_of_cards}")
-  puts response.body
 end

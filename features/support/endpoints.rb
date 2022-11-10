@@ -28,4 +28,8 @@ module Endpoints
     base_url + "/#{deck_id}/pile/#{pile_name}/list/"
   end
 
+  def self.shuffle_a_pile(deck_id, pile_name)
+    base_url + "/#{deck_id}/pile/#{pile_name}/shuffle/"
+  end
+
 end

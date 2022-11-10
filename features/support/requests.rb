@@ -28,4 +28,8 @@ class Requests
     HTTParty.get(Endpoints.list_cards_from_a_pile(deck_id, pile_name))
   end
 
+  def self.shuffle_a_pile(deck_id, pile_name)
+    HTTParty.post(Endpoints.shuffle_a_pile(deck_id, pile_name))
+  end
+
 end
