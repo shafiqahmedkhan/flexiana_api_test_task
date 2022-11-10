@@ -40,7 +40,7 @@ And('make {int} piles with {int} cards from each deck') do |no_of_piles, no_of_c
   @pile_2 = Utilities.generate_pile_name
   pile_1 = Requests.add_cards_to_piles(@deck_id_1, @pile_1, @array_1.join(","))
   expect(pile_1.code).to eql(200)
-  pile_2 = Requests.add_cards_to_piles(@deck_id_2, @pile_1, @array_2.join(","))
+  pile_2 = Requests.add_cards_to_piles(@deck_id_2, @pile_2, @array_2.join(","))
   expect(pile_2.code).to eql(200)
 end
 
