@@ -19,52 +19,52 @@ end
 And('make {int} piles with {int} cards from each deck') do |no_of_piles, no_of_cards|
   #draw 5 cards from deck 1
   @drawn_cards_1 = Requests.draw_a_card_from_shuffled_deck(no_of_cards)
-  response_body = JSON.parse(@drawn_cards_1.body)
-  @deck_id = response_body["deck_id"]
+  @drawn_cards_2 = Requests.draw_a_card_from_shuffled_deck(no_of_cards)
+  response_body_1 = JSON.parse(@drawn_cards_1.body)
+  response_body_2 = JSON.parse(@drawn_cards_2.body)
+  @deck_id_1 = response_body_1["deck_id"]
+  @deck_id_2 = response_body_2["deck_id"]
   #assert we have 5 cards
-  response_body = JSON.parse(@drawn_cards_1.body)
-  expect(response_body["cards"].count).to eql no_of_cards.to_int
+  expect(response_body_1["cards"].count).to eql no_of_cards.to_int
+  expect(response_body_2["cards"].count).to eql no_of_cards.to_int
   #add these cards to a pile
-  puts "************"
-  puts @array1 = []
-  puts "**************"
-  response_body["cards"].each_with_index do | element |
-    @array1.push(element['code'])
+  @array_1 = []
+  response_body_1["cards"].each_with_index do | element |
+    @array_1.push(element['code'])
   end
-  puts @array1
-  puts @array1.respond_to?(:to_a)
-  puts @array1.join(",")
-  puts @array1.respond_to?(:to_s)
-  puts @pile_1 = SecureRandom.send(:choose, [*'a'..'z'], 20)
-  pile_1 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id}/pile/#{@pile_1}/add/?cards=#{@array1.join(",")}")
-  puts pile_1.body
-  #  puts list_of_cards
-  #
-  #draw 5 cards from deck 2
-  #@drawn_cards_2 = Requests.draw_a_card_from_shuffled_deck(no_of_cards)
-  #add these to 2 seperate pile
+  @array_2 = []
+  response_body_2["cards"].each_with_index do | element |
+    @array_2.push(element['code'])
+  end
+  @pile_1 = SecureRandom.send(:choose, [*'a'..'z'], 20)
+  @pile_2 = SecureRandom.send(:choose, [*'a'..'z'], 20)
+  puts
+  pile_1 = Requests.add_cards_to_piles(@deck_id_1, @pile_1, @array_1.join(","))
+  pile_2 = Requests.add_cards_to_piles(@deck_id_2, @pile_1, @array_2.join(","))
 end
 
 And("List the cards in pile1 and pile2") do
   #list the cards in both pile
-  response = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id}/pile/#{@pile_1}/list/")
-  puts response.body
+  response_1 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id_1}/pile/#{@pile_1}/list/")
+  puts response_1.body
+  response_2 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_1}/list/")
+  puts response_2.body
 end
 
 And(/^shuffle pile1$/) do
-  response1 = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id}/pile/#{@pile_1}/shuffle/")
-  puts response1.body
-  response2 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id}/pile/#{@pile_1}/list/")
-  puts response2.body
+  response_1 = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id_1}/pile/#{@pile_1}/shuffle/")
+  puts response_1.body
+  response_2 = HTTParty.get("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_2}/list/")
+  puts response_2.body
   #aseert the above 2 responses are not equal
 end
 
 And("draw {int} cards from pile 1") do |no_of_cards|
-  response = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id}/pile/#{@pile_1}/draw/?count=#{no_of_cards}")
+  response = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id_1}/pile/#{@pile_1}/draw/?count=#{no_of_cards}")
   puts response.body
 end
 
 And("draw {int} cards from pile 2") do |no_of_cards|
-  response = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id}/pile/#{@pile_1}/draw/?count=#{no_of_cards}")
+  response = HTTParty.post("https://deckofcardsapi.com/api/deck/#{@deck_id_2}/pile/#{@pile_2}/draw/?count=#{no_of_cards}")
   puts response.body
 end

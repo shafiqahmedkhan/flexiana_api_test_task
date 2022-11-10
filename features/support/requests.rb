@@ -20,7 +20,8 @@ class Requests
     HTTParty.get(Endpoints.draw_a_card_from_shuffled_deck(draw_count))
   end
 
-  def self.add_to_piles(deck_id, pile_name, cards)
-    HTTParty.post(Endpoints.add_to_piles(deck_id, pile_name, cards))
+  def self.add_cards_to_piles(deck_id, pile_name, cards)
+    HTTParty.get(Endpoints.add_cards_to_piles(deck_id, pile_name, cards))
   end
+
 end
